@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git 'https://github.com/aemull/jkblc-devops.git'
+                git 'https://github.com/username/repository.git'
             }
         }
         
@@ -19,17 +19,20 @@ pipeline {
         stage('Run Docker Container') {
             steps {
                 script {
-                    docker.image("my-streamlit-app").inside('-p 8501:8501') {
-                        sh 'streamlit run app.py'
-                    }
+                    sh 'docker run -d -p 8501:8501 --name my-streamlit-app-container my-streamlit-app'
                 }
             }
         }
     }
     
     post {
-        always {
-            cleanWs()
+         {
+            script {
+                // Hentikan dan hapus container setelah selesai
+                sh 'docker stop my-streamlit-app-container || true'
+                sh 'docker rm my-streamlit-app-container || true'
+                cleanWs()
+            }
         }
     }
 }
