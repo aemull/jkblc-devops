@@ -13,6 +13,13 @@ pipeline {
             }
         }
         
+        stage('Install python3-venv') {
+            steps {
+                sh 'sudo apt-get update'
+                sh 'sudo apt-get install -y python3-venv'
+            }
+        }
+
         stage('Setup Virtual Environment') {
             steps {
                 sh 'python3 -m venv venv'
