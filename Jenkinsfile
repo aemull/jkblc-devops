@@ -30,7 +30,7 @@ pipeline {
     }
     
     post {
-        succes {
+        success {
             script {
                 // Hentikan dan hapus container setelah selesai
                 sh 'docker image prune -f'
