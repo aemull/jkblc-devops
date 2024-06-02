@@ -9,7 +9,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Checkout kode dari GitHub
-                git url: 'https://github.com/aemull/Latihan_git_uhuy.git', branch: 'master'
+                git url: 'https://github.com/aemull/jkblc-devops.git', branch: 'master'
             }
         }
 
