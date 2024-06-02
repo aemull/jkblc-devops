@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        REPO = 'https://github.com/aemull/jkblc-devops'
+        REPO = 'aemull/jkblc-devops'
         BRANCH = 'master'
         //IMAGE_NAME = 'your-dockerhub-username/streamlit-app'
     }
