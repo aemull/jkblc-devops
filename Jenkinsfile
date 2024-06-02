@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git 'https://github.com/aemull/jkblc-devops'
+                git 'https://github.com/username/repository.git'
             }
         }
         
@@ -26,6 +26,7 @@ pipeline {
     }
     
     post {
+        always {
             script {
                 // Hentikan dan hapus container setelah selesai
                 sh 'docker stop my-streamlit-app-container || true'
@@ -34,3 +35,4 @@ pipeline {
             }
         }
     }
+}
