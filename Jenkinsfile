@@ -23,15 +23,15 @@ pipeline {
             }
         }
 
-        stage('Push Docker Image') {
-            steps {
-                script {
-                    docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-credentials-id') {
-                        docker.image("${IMAGE_NAME}:${env.BUILD_ID}").push()
-                    }
-                }
-            }
-        }
+       // stage('Push Docker Image') {
+         //   steps {
+           //     script {
+             //       docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-credentials-id') {
+               //         docker.image("${IMAGE_NAME}:${env.BUILD_ID}").push()
+                 //   }
+              //  }
+           // }
+        //}
 
         stage('Deploy') {
             steps {
