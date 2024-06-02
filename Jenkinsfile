@@ -28,7 +28,6 @@ pipeline {
                     sh """
                         docker ps -q --filter "name=$DOCKER_IMAGE" | grep -q . && docker stop $DOCKER_IMAGE || true
                         docker ps -aq --filter "name=$DOCKER_IMAGE" | grep -q . && docker rm $DOCKER_IMAGE || true
-                        docker run -d -p 8501:8501 --name $DOCKER_IMAGE $DOCKER_IMAGE
                     """
                 }
             }
