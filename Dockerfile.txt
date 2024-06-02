@@ -1,20 +1,15 @@
-# Gunakan image Python sebagai dasar
-FROM python:3.8-slim
+# Menggunakan image dasar Python
+FROM python:3.9
 
-# Menetapkan direktori kerja di dalam container
+# Menentukan working directory di dalam container
 WORKDIR /app
 
-# Menyalin file requirements.txt ke container
-COPY requirements.txt .
+# Menyalin requirements.txt dan file aplikasi ke working directory
+COPY requirements.txt requirements.txt
+COPY app.py app.py
 
-# Menginstal dependencies dari requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+# Install dependencies
+RUN pip install -r requirements.txt
 
-# Menyalin semua file dari direktori kerja host ke container
-COPY . .
-
-# Mengekspos port yang digunakan oleh Streamlit
-EXPOSE 8501
-
-# Menjalankan aplikasi Streamlit
-CMD ["streamlit", "run", "app.py", "--server.port=8501"]
+# Menentukan command yang akan dijalankan pada saat container berjalan
+CMD ["streamlit", "run", "app.py", "--server.port=8501", "--server.address=0.0.0.0"]
