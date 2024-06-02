@@ -26,12 +26,26 @@ pipeline {
     }
     
     post {
-        always {
+        failure {
             script {
                 // Hentikan dan hapus container setelah selesai
                 sh 'docker stop my-streamlit-app-container || true'
                 sh 'docker rm my-streamlit-app-container || true'
                 cleanWs()
+            }
+        }
+         aborted {
+            script {
+                // Hentikan dan hapus container setelah selesai
+                sh 'docker stop my-streamlit-app-container || true'
+                sh 'docker rm my-streamlit-app-container || true'
+                cleanWs()
+            }
+        }
+        always {
+            script {
+                // Hentikan dan hapus container setelah selesai
+                sh 'docker image prune -f'
             }
         }
     }
