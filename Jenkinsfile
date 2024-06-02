@@ -2,35 +2,35 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "streamlit_dashboard"
+        VIRTUAL_ENV = 'venv'
+        PYTHON = "${env.WORKSPACE}/${env.VIRTUAL_ENV}/bin/python"
     }
 
     stages {
-        stage('Checkout') {
+        stage('Clone Repository') {
             steps {
-                git url: 'https://github.com/aemull/jkblc-devops.git', branch: 'master'
+                git 'https://github.com/aemull/jkblc-devops.git'
             }
         }
-
-        stage('Build Docker Image') {
+        
+        stage('Setup Virtual Environment') {
             steps {
-                script {
-                    sh """
-                        docker build -t $DOCKER_IMAGE .
-                    """
-                }
+                sh 'python3 -m venv venv'
+                sh '${PYTHON} -m pip install --upgrade pip'
+                sh '${PYTHON} -m pip install -r requirements.txt'
             }
         }
-
-        stage('Run Docker Container') {
+        
+        stage('Run Application') {
             steps {
-                script {
-                    sh """
-                        docker ps -q --filter "name=$DOCKER_IMAGE" | grep -q . && docker stop $DOCKER_IMAGE || true
-                        docker ps -aq --filter "name=$DOCKER_IMAGE" | grep -q . && docker rm $DOCKER_IMAGE || true
-                    """
-                }
+                sh '${PYTHON} -m streamlit run app.py'
             }
+        }
+    }
+    
+    post {
+        always {
+            cleanWs()
         }
     }
 }
