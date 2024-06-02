@@ -32,14 +32,5 @@ pipeline {
                 }
             }
         }
-
-        stage('Cleanup') {
-            steps {
-                script {
-                    sh "docker rm -f \$(docker ps -a -q --filter ancestor=${env.IMAGE_NAME}:${env.BUILD_ID})"
-                    sh "docker rmi ${env.IMAGE_NAME}:${env.BUILD_ID}"
-                }
-            }
-        }
     }
 }
