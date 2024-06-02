@@ -26,7 +26,6 @@ pipeline {
     }
     
     post {
-         {
             script {
                 // Hentikan dan hapus container setelah selesai
                 sh 'docker stop my-streamlit-app-container || true'
@@ -35,4 +34,3 @@ pipeline {
             }
         }
     }
-}
