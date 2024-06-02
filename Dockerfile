@@ -7,6 +7,7 @@ WORKDIR /app
 # Menyalin requirements.txt dan file aplikasi ke working directory
 COPY requirements.txt requirements.txt
 COPY app.py app.py
+COPY kpopidolsv3.csv kpopidolsv3.csv
 
 # Install dependencies
 RUN pip install -r requirements.txt
