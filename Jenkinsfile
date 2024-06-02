@@ -2,42 +2,37 @@ pipeline {
     agent any
 
     environment {
-        REPO = 'aemull/jkblc-devops'
-        BRANCH = 'master'
-        //IMAGE_NAME = 'your-dockerhub-username/streamlit-app'
+        DOCKER_IMAGE = "streamlit_dashboard"
     }
 
     stages {
         stage('Checkout') {
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: "*/${BRANCH}"]],
-                          userRemoteConfigs: [[url: "https://github.com/${REPO}.git"]]])
+                // Checkout kode dari GitHub
+                git url: 'https://github.com/aemull/jkblc-devops.git', branch: 'master'
             }
         }
 
         stage('Build Docker Image') {
             steps {
                 script {
-                    docker.build("${IMAGE_NAME}:${env.BUILD_ID}")
+                    // Build Docker Image
+                    sh 'docker build -t $DOCKER_IMAGE .'
                 }
             }
         }
 
-       // stage('Push Docker Image') {
-         //   steps {
-           //     script {
-             //       docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-credentials-id') {
-               //         docker.image("${IMAGE_NAME}:${env.BUILD_ID}").push()
-                 //   }
-              //  }
-           // }
-        //}
-
-        stage('Deploy') {
+        stage('Run Docker Container') {
             steps {
                 script {
-                    // Deploy steps
-                    sh 'docker run -d -p 8501:8501 ${IMAGE_NAME}:${env.BUILD_ID}'
+                    // Stop and remove any existing container
+                    sh """
+                        docker ps -q --filter "name=$DOCKER_IMAGE" | grep -q . && docker stop $DOCKER_IMAGE || true
+                        docker ps -aq --filter "name=$DOCKER_IMAGE" | grep -q . && docker rm $DOCKER_IMAGE || true
+                    """
+
+                    // Run Docker Container
+                    sh 'docker run -d -p 8501:8501 --name $DOCKER_IMAGE $DOCKER_IMAGE'
                 }
             }
         }
