@@ -2,9 +2,9 @@ pipeline {
     agent any
 
     environment {
-        REPO = 'github-username/repository-name'
-        BRANCH = 'main'
-        IMAGE_NAME = 'your-dockerhub-username/streamlit-app'
+        REPO = 'https://github.com/aemull/jkblc-devops.git'
+        BRANCH = 'master'
+        //IMAGE_NAME = 'your-dockerhub-username/streamlit-app'
     }
 
     stages {
