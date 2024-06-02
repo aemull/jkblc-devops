@@ -19,6 +19,10 @@ pipeline {
         stage('Run Docker Container') {
             steps {
                 script {
+                    // Hentikan dan hapus container jika sudah ada
+                    sh 'docker stop my-streamlit-app-container || true'
+                    sh 'docker rm my-streamlit-app-container || true'
+                    // Jalankan container baru di latar belakang
                     sh 'docker run -d -p 8501:8501 --name my-streamlit-app-container my-streamlit-app'
                 }
             }
@@ -26,23 +30,7 @@ pipeline {
     }
     
     post {
-        failure {
-            script {
-                // Hentikan dan hapus container setelah selesai
-                sh 'docker stop my-streamlit-app-container || true'
-                sh 'docker rm my-streamlit-app-container || true'
-                cleanWs()
-            }
-        }
-         aborted {
-            script {
-                // Hentikan dan hapus container setelah selesai
-                sh 'docker stop my-streamlit-app-container || true'
-                sh 'docker rm my-streamlit-app-container || true'
-                cleanWs()
-            }
-        }
-        always {
+        succes {
             script {
                 // Hentikan dan hapus container setelah selesai
                 sh 'docker image prune -f'
