@@ -23,3 +23,17 @@ fig = px.scatter(df, x='Height', y='Weight', color='Gender', hover_name='Stage N
 
 # Menampilkan plot di Streamlit
 st.plotly_chart(fig)
+
+
+# Dropdown untuk memilih agensi
+company = st.selectbox("Pilih Agensi:", ["All"] + list(df['Company'].dropna().unique()))
+
+# Filter DataFrame berdasarkan pilihan agensi
+if company != "All":
+    df_company = df[df['Company'] == company]
+else:
+    df_company = df
+
+# Menampilkan tabel grup dari agensi yang dipilih
+st.subheader(f"Group dari Agensi: {company}")
+st.dataframe(df_company[['Group']].drop_duplicates())
